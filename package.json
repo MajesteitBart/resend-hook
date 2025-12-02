@@ -15,6 +15,6 @@
 		"wrangler": "^4.45.0"
 	},
 	"dependencies": {
-		"resend": "^6.5.2"
+		"resend": "^6.3.0-canary.4"
 	}
 }
