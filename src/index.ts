@@ -20,6 +20,18 @@ export interface Payload {
 
 export default {
 	async fetch(request, env, ctx): Promise<Response> {
+		// Validate required environment variables
+		if (!env.RESEND_API_KEY || !env.FROM_ADDRESS || !env.FORWARD_ADDRESS) {
+			console.error('Missing required environment variables:', {
+				hasResendKey: !!env.RESEND_API_KEY,
+				hasFromAddress: !!env.FROM_ADDRESS,
+				hasForwardAddress: !!env.FORWARD_ADDRESS
+			});
+			return Response.json({
+				error: 'Server configuration error: Missing required environment variables'
+			}, { status: 500 });
+		}
+
 		// @ts-expect-error
 		const resend = new Resend(env.RESEND_API_KEY);
 		const event: Payload = await request.json();
