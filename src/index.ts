@@ -44,11 +44,17 @@ export default {
 
 			const { data: attachments } = listAttachments;
 
+			// Extract the original sender's email and name
+			const originalFrom = event.data.from;
+			const fromName = originalFrom.includes('<')
+				? originalFrom.split('<')[0].trim().replace(/"/g, '')
+				: originalFrom.split('@')[0];
+
 			const options = {
-				from: env.FROM_ADDRESS,
+				from: `"${fromName} (via me)" <${env.FROM_ADDRESS}>`,
 				replyTo: event.data.from,
 				to: [env.FORWARD_ADDRESS],
-				subject: event.data.subject,
+				subject: `Fwd: ${event.data.subject}`,
 			} as CreateEmailOptions;
 
 			if (email?.text) options.text = email.text;
